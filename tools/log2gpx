@@ -1,0 +1,18 @@
+#!/bin/bash
+
+src="$HOME"/.openambit
+dst="$HOME"/.openambit/gpx
+
+mkdir -p "$dst"
+
+for input_path in "$src"/*.log; do
+	file_name=$(basename "$input_path" .log)
+	output_path="$dst"/"$file_name".gpx
+
+	if [ -f "$output_path" ]; then
+		continue;
+	fi
+
+	echo "Converting file: $file_name"
+	python2.7 tools/openambit2gpx.py "$input_path" "$output_path" && echo "Convert success" || echo "Convert failed"
+done
